@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update table="sys_script_include">
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
     <sys_script_include action="INSERT_OR_UPDATE">
         <access>public</access>
         <active>true</active>
         <api_name>x_hmac_encoding.TestCryptoJS</api_name>
+        <caller_access/>
         <client_callable>false</client_callable>
         <description/>
         <name>TestCryptoJS</name>
@@ -12,13 +12,42 @@ TestCryptoJS.prototype = {
     initialize: function() {
     },
 	
+	TestJT: function(){
+		var queryStringData = "TEST MESSAGE";//QueryString to Encrypt
+		var iv = CryptoJS.enc.Base64.parse("");//giving empty initialization vector
+		var key = CryptoJS.SHA256 ("Password");//hashing the key using SHA256
+	 
+		var encryptedString = this.encryptData(queryStringData, iv, key);
+		encryptedString = encodeURIComponent(encryptedString);
+		gs.info('genrated encrypt text to send:' + encryptedString);
+		
+
+
+
+
+	},
+
+	encryptData : function (data, iv, key) {
+		if (typeof data == "string") {
+		data = data.slice();
+		encryptedString = CryptoJS.AES.encrypt(data, key, {
+		iv: iv,
+		mode: CryptoJS.mode.CBC,
+		padding: CryptoJS.pad.Pkcs7
+		});
+		}
+		return encryptedString.toString();
+		},
+		
+
 	runTest: function(){
-		var message = 'message';
-		var secret = 'secret';
+		var message = 'TEST';
+		var secret = 'Key';
 		var encrypted = CryptoJS.HmacSHA1(message, secret);
 		gs.info(gs.base64Encode(encrypted));
 		var encrypted2 = CryptoJS.HmacSHA1(message, secret);
 		gs.info(gs.base64Encode(encrypted2));	
+		
 	},
 	
 	runTest2: function(key, data){
@@ -51,19 +80,20 @@ TestCryptoJS.prototype = {
     return base64.join("");
   },
 
+
     type: 'TestCryptoJS'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2017-03-10 20:08:51</sys_created_on>
         <sys_id>0f9df66f1391b2007c453d7ed144b0ea</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>20</sys_mod_count>
         <sys_name>TestCryptoJS</sys_name>
         <sys_package display_value="HMAC Encoding" source="x_hmac_encoding">bce6066f1311b2007c453d7ed144b0f8</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="HMAC Encoding">bce6066f1311b2007c453d7ed144b0f8</sys_scope>
         <sys_update_name>sys_script_include_0f9df66f1391b2007c453d7ed144b0ea</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-03-10 21:24:25</sys_updated_on>
+        <sys_updated_by>ux000446</sys_updated_by>
+        <sys_updated_on>2021-12-24 09:05:28</sys_updated_on>
     </sys_script_include>
 </record_update>
